@@ -1,0 +1,201 @@
+Enter password: ******
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 13
+Server version: 9.0.1 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2024, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> create database INSURANCE;
+Query OK, 1 row affected (0.02 sec)
+
+mysql> use insurance;
+Database changed
+mysql> create table PERSON(driver_id varchar(10),name varchar(20), address varchar(20));
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> create table CAR(reg_num varchar(10),model varchar(10), year int);
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> create table ACCIDENT(report_id varchar(10),accident_date varchar(10)
+, location (20));
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '(20))' at line 1
+mysql> create table ACCIDENT(report_id varchar(10),accident_date varchar(10), location varchar(20));
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> create table OWNS(driver_id varchar(10),reg_num varchar(10));
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> create table PARTICIPATED(driver_id varchar(10),reg_num varchar(10),report_num int, damage_amount int);
+Query OK, 0 rows affected (0.08 sec)
+
+mysql> insert into person values('A01','Pranav','Bengaluru');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into person values('A02','Prashob','Bengaluru');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into person values('A03','Paras','Bengaluru');
+Query OK, 1 row affected (0.02 sec)
+
+mysql> insert into person values('A04','Rishab','Bengaluru');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into person values('A05','Sahasra','Bengaluru');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into car values('KA052250','Lamborgini',2022);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into car values('KA053488','BMW',2021);
+Query OK, 1 row affected (0.02 sec)
+
+mysql> insert into car values('KA053680','Thar',2022);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into car values('KA054568','Farrari',2022);
+Query OK, 1 row affected (0.02 sec)
+
+mysql> insert into car values('KA054999','Porsche',2022);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into accident values('AC01','25-05-2023','Mysuru');
+Query OK, 1 row affected (0.02 sec)
+
+mysql> insert into accident values('AC02','20-06-2023','Bengaluru');
+Query OK, 1 row affected (0.02 sec)
+
+mysql> insert into accident values('AC03','10-07-2023','Bengaluru');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into accident values('AC04','18-07-2023','Bengaluru');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into accident values('AC05','18-08-2023','Bengaluru');
+Query OK, 1 row affected (0.02 sec)
+
+mysql> insert into owns values('A01','KA052250');
+Query OK, 1 row affected (0.02 sec)
+
+mysql> insert into owns values('A02','KA053488');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into owns values('A03','KA054568');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into owns values('A04','KA053680');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into owns values('A05','KA054999');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into participated values('A01','KA054999',11,10000);
+Query OK, 1 row affected (0.02 sec)
+
+mysql> insert into participated values('A02','KA052250',12,100000);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into participated values('A02','KA053488',13,250000);
+Query OK, 1 row affected (0.03 sec)
+
+mysql> insert into participated values('A03','KA054568',14,150000);
+Query OK, 1 row affected (0.02 sec)
+
+mysql> insert into participated values('A05','KA053600',15,175000);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select *from person;
++-----------+---------+-----------+
+| driver_id | name    | address   |
++-----------+---------+-----------+
+| A01       | Pranav  | Bengaluru |
+| A02       | Prashob | Bengaluru |
+| A03       | Paras   | Bengaluru |
+| A04       | Rishab  | Bengaluru |
+| A05       | Sahasra | Bengaluru |
++-----------+---------+-----------+
+5 rows in set (0.00 sec)
+
+mysql> select *from car;
++----------+------------+------+
+| reg_num  | model      | year |
++----------+------------+------+
+| KA052250 | Lamborgini | 2022 |
+| KA053488 | BMW        | 2021 |
+| KA053680 | Thar       | 2022 |
+| KA054568 | Farrari    | 2022 |
+| KA054999 | Porsche    | 2022 |
++----------+------------+------+
+5 rows in set (0.00 sec)
+
+mysql> select *from accident;
++-----------+---------------+-----------+
+| report_id | accident_date | location  |
++-----------+---------------+-----------+
+| AC01      | 25-05-2023    | Mysuru    |
+| AC02      | 20-06-2023    | Bengaluru |
+| AC03      | 10-07-2023    | Bengaluru |
+| AC04      | 18-07-2023    | Bengaluru |
+| AC05      | 18-08-2023    | Bengaluru |
++-----------+---------------+-----------+
+5 rows in set (0.00 sec)
+
+mysql> select *from owns;
++-----------+----------+
+| driver_id | reg_num  |
++-----------+----------+
+| A01       | KA052250 |
+| A02       | KA053488 |
+| A03       | KA054568 |
+| A04       | KA053680 |
+| A05       | KA054999 |
++-----------+----------+
+5 rows in set (0.00 sec)
+
+mysql> select *from participated;
++-----------+----------+------------+---------------+
+| driver_id | reg_num  | report_num | damage_amount |
++-----------+----------+------------+---------------+
+| A01       | KA054999 |         11 |         10000 |
+| A02       | KA052250 |         12 |        100000 |
+| A02       | KA053488 |         13 |        250000 |
+| A03       | KA054568 |         14 |        150000 |
+| A05       | KA053600 |         15 |        175000 |
++-----------+----------+------------+---------------+
+5 rows in set (0.00 sec)
+
+mysql> select accident_date, location from accident;
++---------------+-----------+
+| accident_date | location  |
++---------------+-----------+
+| 25-05-2023    | Mysuru    |
+| 20-06-2023    | Bengaluru |
+| 10-07-2023    | Bengaluru |
+| 18-07-2023    | Bengaluru |
+| 18-08-2023    | Bengaluru |
++---------------+-----------+
+5 rows in set (0.00 sec)
+
+mysql> update participated  set damage_amount=25000 where reg_num='KA052250'
+ and report_num=12;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select *from participated;
++-----------+----------+------------+---------------+
+| driver_id | reg_num  | report_num | damage_amount |
++-----------+----------+------------+---------------+
+| A01       | KA054999 |         11 |         10000 |
+| A02       | KA052250 |         12 |         25000 |
+| A02       | KA053488 |         13 |        250000 |
+| A03       | KA054568 |         14 |        150000 |
+| A05       | KA053600 |         15 |        175000 |
++-----------+----------+------------+---------------+
+5 rows in set (0.00 sec)
+
+mysql>
