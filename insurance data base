@@ -1,121 +1,188 @@
-Enter password: ******
-Welcome to the MySQL monitor.  Commands end with ; or \g.
-Your MySQL connection id is 13
-Server version: 9.0.1 MySQL Community Server - GPL
+Consider the Insurance database given below. The data types are specified.
+     PERSON (driver_id: String, name: String, address: String)
+     CAR (reg_num: String, model: String, year: int)
+     ACCIDENT (report_num: int, accident_date: date, location: String)
+     OWNS (driver_id: String, reg_num: String)
+     PARTICIPATED (driver_id: String,reg_num: String, report_num: int, damage_amount: int)
+List of operations
+     ● Create the above tables by properly specifying the primary keys and the foreign
+       keys.
+     ● Enter at least five tuples for each relation
+     ● Display Accident date and location
+     ● Display driver id who did the accident damage greater than or equal to Rs.25000
 
-Copyright (c) 2000, 2024, Oracle and/or its affiliates.
+mysql> create database insurance;
+Query OK, 1 row affected (0.01 sec)
 
-Oracle is a registered trademark of Oracle Corporation and/or its
-affiliates. Other names may be trademarks of their respective
-owners.
-
-Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
-
-mysql> create database INSURANCE;
-Query OK, 1 row affected (0.02 sec)
-
-mysql> use insurance;
+mysql> use insurance1
 Database changed
-mysql> create table PERSON(driver_id varchar(10),name varchar(20), address varchar(20));
+
+mysql> create table person(driver_id varchar(10), name varchar(20), address varchar(30), primary key(driver_id));
 Query OK, 0 rows affected (0.04 sec)
 
-mysql> create table CAR(reg_num varchar(10),model varchar(10), year int);
-Query OK, 0 rows affected (0.04 sec)
+mysql> desc person;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| driver_id | varchar(10) | NO   | PRI | NULL    |       |
+| name      | varchar(20) | YES  |     | NULL    |       |
+| address   | varchar(30) | YES  |     | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+3 rows in set (0.02 sec)
 
-mysql> create table ACCIDENT(report_id varchar(10),accident_date varchar(10)
-, location (20));
-ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '(20))' at line 1
-mysql> create table ACCIDENT(report_id varchar(10),accident_date varchar(10), location varchar(20));
-Query OK, 0 rows affected (0.04 sec)
-
-mysql> create table OWNS(driver_id varchar(10),reg_num varchar(10));
+mysql> create table car(reg_num varchar(10), model varchar(10), year int, primary key(reg_num));
 Query OK, 0 rows affected (0.03 sec)
 
-mysql> create table PARTICIPATED(driver_id varchar(10),reg_num varchar(10),report_num int, damage_amount int);
-Query OK, 0 rows affected (0.08 sec)
+mysql> desc car;
++---------+-------------+------+-----+---------+-------+
+| Field   | Type        | Null | Key | Default | Extra |
++---------+-------------+------+-----+---------+-------+
+| reg_num | varchar(10) | NO   | PRI | NULL    |       |
+| model   | varchar(10) | YES  |     | NULL    |       |
+| year    | int         | YES  |     | NULL    |       |
++---------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
 
-mysql> insert into person values('A01','Pranav','Bengaluru');
-Query OK, 1 row affected (0.01 sec)
+mysql> create table accident(report_num int, accident_date date, location varchar(20), prim
+ary key(report_num));
+Query OK, 0 rows affected (0.04 sec)
 
-mysql> insert into person values('A02','Prashob','Bengaluru');
-Query OK, 1 row affected (0.01 sec)
+mysql> desc accident;
++---------------+-------------+------+-----+---------+-------+
+| Field         | Type        | Null | Key | Default | Extra |
++---------------+-------------+------+-----+---------+-------+
+| report_num    | int         | NO   | PRI | NULL    |       |
+| accident_date | date        | YES  |     | NULL    |       |
+| location      | varchar(20) | YES  |     | NULL    |       |
++---------------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
 
-mysql> insert into person values('A03','Paras','Bengaluru');
+mysql> create table owns(driver_id varchar(10),reg_num varchar(10),
+    -> primary key(driver_id, reg_num),
+    -> foreign key(driver_id) references person(driver_id),
+    -> foreign key(reg_num) references car(reg_num));
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> desc owns;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| driver_id | varchar(10) | NO   | PRI | NULL    |       |
+| reg_num   | varchar(10) | NO   | PRI | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+
+mysql> create table participated(driver_id varchar(10),reg_num varchar(10),
+    -> report_num int, damage_amount int,
+    -> primary key(driver_id, reg_num,report_num),
+    -> foreign key(driver_id) references person(driver_id),
+    -> foreign key(reg_num) references car(reg_num));
+    -> foreign key(report_num) references accident(report_num));
+Query OK, 0 rows affected (0.06 sec)
+
+mysql> desc participated;
++---------------+-------------+------+-----+---------+-------+
+| Field         | Type        | Null | Key | Default | Extra |
++---------------+-------------+------+-----+---------+-------+
+| driver_id     | varchar(10) | NO   | PRI | NULL    |       |
+| reg_num       | varchar(10) | NO   | PRI | NULL    |       |
+| report_num    | int         | NO   | PRI | NULL    |       |
+| damage_amount | int         | YES  |     | NULL    |       |
++---------------+-------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql>
+mysql> insert into person values('A01','Paras','Bengaluru');
 Query OK, 1 row affected (0.02 sec)
+
+mysql> insert into person values('A02','Pranav','Bengaluru');
+Query OK, 1 row affected (0.02 sec)
+
+mysql> insert into person values('A03','Prashob','Bengaluru');
+Query OK, 1 row affected (0.01 sec)
 
 mysql> insert into person values('A04','Rishab','Bengaluru');
 Query OK, 1 row affected (0.01 sec)
 
 mysql> insert into person values('A05','Sahasra','Bengaluru');
-Query OK, 1 row affected (0.01 sec)
-
-mysql> insert into car values('KA052250','Lamborgini',2022);
-Query OK, 1 row affected (0.01 sec)
-
-mysql> insert into car values('KA053488','BMW',2021);
 Query OK, 1 row affected (0.02 sec)
 
-mysql> insert into car values('KA053680','Thar',2022);
-Query OK, 1 row affected (0.01 sec)
-
-mysql> insert into car values('KA054568','Farrari',2022);
+mysql> insert into car values('KA053560','Thar',2018);
 Query OK, 1 row affected (0.02 sec)
 
-mysql> insert into car values('KA054999','Porsche',2022);
+mysql> insert into car values('KA053571','Lamborgini',2020);
 Query OK, 1 row affected (0.01 sec)
 
-mysql> insert into accident values('AC01','25-05-2023','Mysuru');
+mysql> insert into car values('KA053567','BMW',2019);
 Query OK, 1 row affected (0.02 sec)
 
-mysql> insert into accident values('AC02','20-06-2023','Bengaluru');
+mysql> insert into car values('KA053577','Farrari',2019);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into car values('KA053677','Porsche',2021);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into accident values(11,'2022-01-24','Mysuru');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into accident values(12,'2022-02-20','Mysuru');
 Query OK, 1 row affected (0.02 sec)
 
-mysql> insert into accident values('AC03','10-07-2023','Bengaluru');
+mysql> insert into accident values(13,'2022-02-28','Bengaluru');
 Query OK, 1 row affected (0.01 sec)
 
-mysql> insert into accident values('AC04','18-07-2023','Bengaluru');
-Query OK, 1 row affected (0.01 sec)
-
-mysql> insert into accident values('AC05','18-08-2023','Bengaluru');
+mysql> insert into accident values(14,'2022-03-02','Bengaluru');
 Query OK, 1 row affected (0.02 sec)
 
-mysql> insert into owns values('A01','KA052250');
+mysql> insert into accident values(15,'2022-03-18','Bengaluru');
 Query OK, 1 row affected (0.02 sec)
 
-mysql> insert into owns values('A02','KA053488');
+mysql> insert into OWNS values('A01','KA053560');
 Query OK, 1 row affected (0.01 sec)
 
-mysql> insert into owns values('A03','KA054568');
-Query OK, 1 row affected (0.01 sec)
-
-mysql> insert into owns values('A04','KA053680');
-Query OK, 1 row affected (0.01 sec)
-
-mysql> insert into owns values('A05','KA054999');
-Query OK, 1 row affected (0.01 sec)
-
-mysql> insert into participated values('A01','KA054999',11,10000);
+mysql> insert into OWNS values('A02','KA053571');
 Query OK, 1 row affected (0.02 sec)
 
-mysql> insert into participated values('A02','KA052250',12,100000);
+mysql> insert into OWNS values('A03','KA053567');
 Query OK, 1 row affected (0.01 sec)
 
-mysql> insert into participated values('A02','KA053488',13,250000);
-Query OK, 1 row affected (0.03 sec)
+mysql> insert into OWNS values('A04','KA053577');
+Query OK, 1 row affected (0.01 sec)
 
-mysql> insert into participated values('A03','KA054568',14,150000);
+mysql> insert into OWNS values('A05','KA053677');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert participated values('A01','KA053560',11,100000);
 Query OK, 1 row affected (0.02 sec)
 
-mysql> insert into participated values('A05','KA053600',15,175000);
+mysql> insert into participated values('A02','KA053571',12,500000);
 Query OK, 1 row affected (0.01 sec)
+
+mysql> select *from participated;
++-----------+----------+------------+---------------+
+| driver_id | reg_num  | report_num | damage_amount |
++-----------+----------+------------+---------------+
+| A01       | KA053560 |         11 |        100000 |
+| A02       | KA053571 |         12 |        500000 |
++-----------+----------+------------+---------------+
+2 rows in set (0.00 sec)
+
+mysql> insert into participated values('A03','KA053567',13,250000);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into participated values('A04','KA053577',14,200000);
+Query OK, 1 row affected (0.02 sec)
+
+mysql> insert into participated values('A05','KA053677',15,75000);
+Query OK, 1 row affected (0.02 sec)
 
 mysql> select *from person;
 +-----------+---------+-----------+
 | driver_id | name    | address   |
 +-----------+---------+-----------+
-| A01       | Pranav  | Bengaluru |
-| A02       | Prashob | Bengaluru |
-| A03       | Paras   | Bengaluru |
+| A01       | Paras   | Bengaluru |
+| A02       | Pranav  | Bengaluru |
+| A03       | Prashob | Bengaluru |
 | A04       | Rishab  | Bengaluru |
 | A05       | Sahasra | Bengaluru |
 +-----------+---------+-----------+
@@ -125,35 +192,35 @@ mysql> select *from car;
 +----------+------------+------+
 | reg_num  | model      | year |
 +----------+------------+------+
-| KA052250 | Lamborgini | 2022 |
-| KA053488 | BMW        | 2021 |
-| KA053680 | Thar       | 2022 |
-| KA054568 | Farrari    | 2022 |
-| KA054999 | Porsche    | 2022 |
+| KA053560 | Thar       | 2018 |
+| KA053567 | BMW        | 2019 |
+| KA053571 | Lamborgini | 2020 |
+| KA053577 | Farrari    | 2019 |
+| KA053677 | Porsche    | 2021 |
 +----------+------------+------+
 5 rows in set (0.00 sec)
 
 mysql> select *from accident;
-+-----------+---------------+-----------+
-| report_id | accident_date | location  |
-+-----------+---------------+-----------+
-| AC01      | 25-05-2023    | Mysuru    |
-| AC02      | 20-06-2023    | Bengaluru |
-| AC03      | 10-07-2023    | Bengaluru |
-| AC04      | 18-07-2023    | Bengaluru |
-| AC05      | 18-08-2023    | Bengaluru |
-+-----------+---------------+-----------+
++------------+---------------+-----------+
+| report_num | accident_date | location  |
++------------+---------------+-----------+
+|         11 | 2022-01-24    | Mysuru    |
+|         12 | 2022-02-20    | Mysuru    |
+|         13 | 2022-02-28    | Bengaluru |
+|         14 | 2022-03-02    | Bengaluru |
+|         15 | 2022-03-18    | Bengaluru |
++------------+---------------+-----------+
 5 rows in set (0.00 sec)
 
 mysql> select *from owns;
 +-----------+----------+
 | driver_id | reg_num  |
 +-----------+----------+
-| A01       | KA052250 |
-| A02       | KA053488 |
-| A03       | KA054568 |
-| A04       | KA053680 |
-| A05       | KA054999 |
+| A01       | KA053560 |
+| A03       | KA053567 |
+| A02       | KA053571 |
+| A04       | KA053577 |
+| A05       | KA053677 |
 +-----------+----------+
 5 rows in set (0.00 sec)
 
@@ -161,28 +228,16 @@ mysql> select *from participated;
 +-----------+----------+------------+---------------+
 | driver_id | reg_num  | report_num | damage_amount |
 +-----------+----------+------------+---------------+
-| A01       | KA054999 |         11 |         10000 |
-| A02       | KA052250 |         12 |        100000 |
-| A02       | KA053488 |         13 |        250000 |
-| A03       | KA054568 |         14 |        150000 |
-| A05       | KA053600 |         15 |        175000 |
+| A01       | KA053560 |         11 |        100000 |
+| A02       | KA053571 |         12 |        500000 |
+| A03       | KA053567 |         13 |        250000 |
+| A04       | KA053577 |         14 |        200000 |
+| A05       | KA053677 |         15 |         75000 |
 +-----------+----------+------------+---------------+
 5 rows in set (0.00 sec)
 
-mysql> select accident_date, location from accident;
-+---------------+-----------+
-| accident_date | location  |
-+---------------+-----------+
-| 25-05-2023    | Mysuru    |
-| 20-06-2023    | Bengaluru |
-| 10-07-2023    | Bengaluru |
-| 18-07-2023    | Bengaluru |
-| 18-08-2023    | Bengaluru |
-+---------------+-----------+
-5 rows in set (0.00 sec)
-
-mysql> update participated  set damage_amount=25000 where reg_num='KA052250'
- and report_num=12;
+mysql> update participated set damage_amount=250000 where reg_num='KA053571' AND report_num
+=12;
 Query OK, 1 row affected (0.01 sec)
 Rows matched: 1  Changed: 1  Warnings: 0
 
@@ -190,12 +245,50 @@ mysql> select *from participated;
 +-----------+----------+------------+---------------+
 | driver_id | reg_num  | report_num | damage_amount |
 +-----------+----------+------------+---------------+
-| A01       | KA054999 |         11 |         10000 |
-| A02       | KA052250 |         12 |         25000 |
-| A02       | KA053488 |         13 |        250000 |
-| A03       | KA054568 |         14 |        150000 |
-| A05       | KA053600 |         15 |        175000 |
+| A01       | KA053560 |         11 |        100000 |
+| A02       | KA053571 |         12 |        250000 |
+| A03       | KA053567 |         13 |        250000 |
+| A04       | KA053577 |         14 |        200000 |
+| A05       | KA053677 |         15 |         75000 |
 +-----------+----------+------------+---------------+
 5 rows in set (0.00 sec)
+
+mysql> insert into accident values(16,'2022-03-28','Bengaluru');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select *from accident;
++------------+---------------+-----------+
+| report_num | accident_date | location  |
++------------+---------------+-----------+
+|         11 | 2022-01-24    | Mysuru    |
+|         12 | 2022-02-20    | Mysuru    |
+|         13 | 2022-02-28    | Bengaluru |
+|         14 | 2022-03-02    | Bengaluru |
+|         15 | 2022-03-18    | Bengaluru |
+|         16 | 2022-03-28    | Bengaluru |
++------------+---------------+-----------+
+6 rows in set (0.00 sec)
+
+mysql> select accident_date, location from accident;
++---------------+-----------+
+| accident_date | location  |
++---------------+-----------+
+| 2022-01-24    | Mysuru    |
+| 2022-02-20    | Mysuru    |
+| 2022-02-28    | Bengaluru |
+| 2022-03-02    | Bengaluru |
+| 2022-03-18    | Bengaluru |
+| 2022-03-28    | Bengaluru |
++---------------+-----------+
+6 rows in set (0.00 sec)
+
+mysql> select driver_id from participated where damage_amount>=250000;
++-----------+
+| driver_id |
++-----------+
+| A02       |
+| A03       |
++-----------+
+2 rows in set (0.00 sec)
 
 mysql>
