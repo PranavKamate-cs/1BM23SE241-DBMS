@@ -290,4 +290,101 @@ mysql> select driver_id from participated where damage_amount>=250000;
 +-----------+
 2 rows in set (0.00 sec)
 
+* list the entireparticipated relation in the desending oredr od damage amount 
+
+mysql> select * from participated order by damage_amount desc;
++-----------+----------+------------+---------------+
+| driver_id | reg_num  | report_num | damage_amount |
++-----------+----------+------------+---------------+
+| A02       | KA053571 |         12 |        250000 |
+| A03       | KA053567 |         13 |        250000 |
+| A04       | KA053577 |         14 |        200000 |
+| A01       | KA053560 |         11 |        100000 |
+| A05       | KA053677 |         15 |         75000 |
++-----------+----------+------------+---------------+
+5 rows in set (0.00 sec)
+
+*FIND THE AVERAGE DAMAGE AMOUNT 
+
+mysql> select avg(damage_amount) from participated;
++--------------------+
+| avg(damage_amount) |
++--------------------+
+|        175000.0000 |
++--------------------+
+1 row in set (0.00 sec)
+
+*LIST THE NAME OF DRIVERS WHOSE DAMAGE IS GREATER THEN THE AVERAGE DAMAGE AMOUNT
+
+mysql> select name from person a, participated b where a.driver_id=b.driver_id and damage_amount>(sele
+ct avg(damage_amount) from participated);
++---------+
+| name    |
++---------+
+| Pranav  |
+| Prashob |
+| Rishab  |
++---------+
+3 rows in set (0.00 sec)
+
+*FIND MAXIMUM DAMAGE AMOUNT
+
+mysql> select max(damage_amount) from participated;
++--------------------+
+| max(damage_amount) |
++--------------------+
+|             250000 |
++--------------------+
+1 row in set (0.00 sec)
+mysql> SELECT * from car order by year asc;
++----------+------------+------+
+| reg_num  | model      | year |
++----------+------------+------+
+| KA053560 | Thar       | 2018 |
+| KA053567 | BMW        | 2019 |
+| KA053577 | Farrari    | 2019 |
+| KA053571 | Lamborgini | 2020 |
+| KA053677 | Porsche    | 2021 |
++----------+------------+------+
+5 rows in set (0.00 sec)
+
+mysql> select count(report_num)
+    -> from car c, participatede p
+    -> where c.reg_num=p.reg_num and c.model="BMW";
+ERROR 1146 (42S02): Table 'insurance1.participatede' doesn't exist
+mysql> select count(report_num)
+    -> from car c, participated p
+    -> where c.reg_num=p.reg_num and c.model="BMW";
++-------------------+
+| count(report_num) |
++-------------------+
+|                 1 |
++-------------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT count(distinct driver_id)
+    -> from participated a, accident b
+    -> where a.report_num=b.report_num and b.accident_date like '__22%';
++---------------------------+
+| count(distinct driver_id) |
++---------------------------+
+|                         5 |
++---------------------------+
+1 row in set (0.00 sec)
+
+mysql>  delete from participated where
+    -> damage_amount < ( 175000.0000);
+Query OK, 2 rows affected (0.00 sec)
+
+mysql> select * from participated
+    -> ;
++-----------+----------+------------+---------------+
+| driver_id | reg_num  | report_num | damage_amount |
++-----------+----------+------------+---------------+
+| A02       | KA053571 |         12 |        250000 |
+| A03       | KA053567 |         13 |        250000 |
+| A04       | KA053577 |         14 |        200000 |
++-----------+----------+------------+---------------+
+3 rows in set (0.00 sec)
+
 mysql>
