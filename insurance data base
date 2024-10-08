@@ -43,8 +43,7 @@ mysql> desc car;
 +---------+-------------+------+-----+---------+-------+
 3 rows in set (0.00 sec)
 
-mysql> create table accident(report_num int, accident_date date, location varchar(20), prim
-ary key(report_num));
+mysql> create table accident(report_num int, accident_date date, location varchar(20), primary key(report_num));
 Query OK, 0 rows affected (0.04 sec)
 
 mysql> desc accident;
