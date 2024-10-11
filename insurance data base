@@ -336,6 +336,9 @@ mysql> select max(damage_amount) from participated;
 |             250000 |
 +--------------------+
 1 row in set (0.00 sec)
+
+**DESPLAY THE ENTIRE CAR RELATION IN THE ASCENDING ORDER OF MANUFACTURING YEAR. 
+
 mysql> SELECT * from car order by year asc;
 +----------+------------+------+
 | reg_num  | model      | year |
@@ -348,10 +351,8 @@ mysql> SELECT * from car order by year asc;
 +----------+------------+------+
 5 rows in set (0.00 sec)
 
-mysql> select count(report_num)
-    -> from car c, participatede p
-    -> where c.reg_num=p.reg_num and c.model="BMW";
-ERROR 1146 (42S02): Table 'insurance1.participatede' doesn't exist
+**FIND THE NUMBER OF ACCIDENTS IN WHICH CARS BELONGING TO A SPECIFIC MODEL (BMW) WERE INVOLVED.
+
 mysql> select count(report_num)
     -> from car c, participated p
     -> where c.reg_num=p.reg_num and c.model="BMW";
@@ -361,6 +362,8 @@ mysql> select count(report_num)
 |                 1 |
 +-------------------+
 1 row in set (0.00 sec)
+
+**FIND THE TOTAL NUMBER OF PEOPLE WHO OWNED CARS THAT WERE INVOLVED IN ACCIDENT IN 2022.
 
 mysql> SELECT count(distinct driver_id)
     -> from participated a, accident b
@@ -376,8 +379,9 @@ mysql>  delete from participated where
     -> damage_amount < ( 175000.0000);
 Query OK, 2 rows affected (0.00 sec)
 
-mysql> select * from participated
-    -> ;
+**DELETE THE TUPLE WHOSE DAMAGE AMOUNT IS BELOW THE AVERAGE DAMAGE AMOUNT
+
+mysql> select * from participated;
 +-----------+----------+------------+---------------+
 | driver_id | reg_num  | report_num | damage_amount |
 +-----------+----------+------------+---------------+
