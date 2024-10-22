@@ -208,4 +208,16 @@ mysql> select * from loan;
 +---------+-------------------+--------+
 5 rows in set (0.00 sec)
 
-mysql>
+mysql> select Branch_name,CONCAT(Assets/100000,'lakhs')Assets_in_lakhs from branch;
++-------------------+-----------------+
+| Branch_name       | Assets_in_lakhs |
++-------------------+-----------------+
+| SBI_Chamrajpet    | 0.5000lakhs     |
+| SBI_Jantaramntar  | 0.2000lakhs     |
+| SBI_ParlimentRoad | 0.1000lakhs     |
+| SBI_ResidencyRoad | 0.1000lakhs     |
+| SBI_ShivajiRoad   | 0.2000lakhs     |
++-------------------+-----------------+
+5 rows in set (0.01 sec)
+
+
