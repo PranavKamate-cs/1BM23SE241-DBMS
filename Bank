@@ -220,4 +220,38 @@ mysql> select Branch_name,CONCAT(Assets/100000,'lakhs')Assets_in_lakhs from bran
 +-------------------+-----------------+
 5 rows in set (0.01 sec)
 
+mysql> select d.Customor_name from depositer d, bank_account b where b.Branch_name='SBI_SBI_ResidencyRoad' and d.Accno=b.Accno group by d.Customor_name having count(d.Accno)>=2;
+Empty set (0.00 sec)
+
+mysql> create view sum_of_loan
+    -> as select Branch_name, SUM(balance)
+    -> from bank_account
+    -> group by Branch_name;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> select * from sum_of_loan;
++-------------------+--------------+
+| Branch_name       | SUM(balance) |
++-------------------+--------------+
+| SBI_Chamrajpet    |         2000 |
+| SBI_Jantaramntar  |        13000 |
+| SBI_ParlimentRoad |         4000 |
+| SBI_ResidencyRoad |        24000 |
+| SBI_ShivajiRoad   |         9000 |
++-------------------+--------------+
+5 rows in set (0.00 sec)
+
+mysql> select bc.Customor_name, CONCAT(balance+1000,' rupees')
+    -> updated_balance from bank_account b,bank_customer bc, depositer d where bc.Customor_name=d.Cust
+omor_name and b.Accno=d.Accno and bc.city='Bengalore';
++---------------+-----------------+
+| Customor_name | updated_balance |
++---------------+-----------------+
+| Avinash       | 3000 rupees     |
+| Avinash       | 5000 rupees     |
+| Dinesh        | 6000 rupees     |
+| Dinesh        | 6000 rupees     |
++---------------+-----------------+
+4 rows in set (0.00 sec)
+
 
