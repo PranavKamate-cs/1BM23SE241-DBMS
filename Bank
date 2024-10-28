@@ -220,8 +220,13 @@ mysql> select Branch_name,CONCAT(Assets/100000,'lakhs')Assets_in_lakhs from bran
 +-------------------+-----------------+
 5 rows in set (0.01 sec)
 
-mysql> select d.Customor_name from depositer d, bank_account b where b.Branch_name='SBI_SBI_ResidencyRoad' and d.Accno=b.Accno group by d.Customor_name having count(d.Accno)>=2;
-Empty set (0.00 sec)
+mysql> select d.Customor_name from depositer d, bank_account b where b.Branch_name='SBI_ResidencyRoad' and d.Accno=b.Accno group by d.Customor_name having count(d.Accno)>=2;
++---------------+
+| Customor_name |
++---------------+
+| Dinesh        |
++---------------+
+1 row in set (0.01 sec)
 
 mysql> create view sum_of_loan
     -> as select Branch_name, SUM(balance)
