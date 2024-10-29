@@ -1,0 +1,40 @@
+mysql> create database employeedatabase
+    -> ;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> use employeedatabase
+Database changed
+
+mysql> create table Dept(
+    -> Deptno int,
+    -> Dname varchar(20),
+    -> Dloc varchar(20));
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> create table employee(
+    -> Empno int,
+    -> Ename varchar(20),
+    -> Mrgno int,
+    -> HireDate date,
+    -> Deptno int references Dept(Deptno) on delete cascade on update cascade);
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> create table incentives(
+    -> Empno int references employee(Empno) on delete cascade on update cascade,
+    -> IncentiveDate date,
+    -> IncentiveAmount int);
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> create table project(
+    -> Pno int primary key,
+    -> Pname varchar(20),
+    -> Ploc varchar(20));
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> create table Assignedto(
+    -> Empno int references employee(Empno) on delete cascade on update cascade,
+    -> Pno int references project(Pno) on delete cascade on update cascade,
+    -> job_role varchar(20));
+Query OK, 0 rows affected (0.02 sec)
+
+mysql>
